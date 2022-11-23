@@ -20,25 +20,25 @@ botonesNumeros.forEach(function (boton) {
     })
 });
 
-operador.forEach(function (boton){
+operador.forEach(function (boton) {
     boton.addEventListener('click', function () {
         selectOperacion(boton.innerText);
     })
 });
 
-botonIgual.addEventListener('click', function(){ 
+botonIgual.addEventListener('click', function () {
     calcular();
     actualizar();
 });
 
-botonClear.addEventListener('click', function(){
+botonClear.addEventListener('click', function () {
     clear();
     actualizar();
 })
 
-function selectOperacion (op) {
-    if(valorA === '') return;
-    if(valorB !== ''){
+function selectOperacion(op) {
+    if (valorA === '') return;
+    if (valorB !== '') {
         calcular();
     }
     operacion = op.toString();
@@ -46,12 +46,16 @@ function selectOperacion (op) {
     valorA = '';
 }
 
+
+
 function calcular() {
+
     let calculo;
     let anterior = parseFloat(valorB);
     let actual = parseFloat(valorA);
-    let operador = "" ;
-    if(isNaN(anterior) || isNaN(actual)) return;
+    let operador = "";
+
+    if (isNaN(anterior) || isNaN(actual)) return;
     switch (operacion) {
         case "+":
             calculo = anterior + actual;
@@ -92,36 +96,48 @@ function calcular() {
         localStorage.historial = JSON.stringify(dataLocal)
     }
 
-    
-
-    let info = JSON.parse(localStorage.getItem("historial"))
-
-    let lista = document.getElementById("contenedor_cuentas");
-
-    let res = document.createElement ("ul");
-    // lista.innerHTML="";
-    
-
-    for (item of info) {
-
-        res.innerHTML = `<li> ${item.numero1} ${item.op} ${item.numero2} = ${item.resultado} </li>` ;
-        lista.append(res);
-    
-    }
-
-    let Borrar = document.getElementById("boton");
-
-    Borrar.addEventListener('click' , function(){
-    localStorage.removeItem("historial")
-    lista.innerHTML="";
-    })
-
+    traer_historial();
 
 }
 
 
 
 
+function traer_historial() {
+
+    let info = JSON.parse(localStorage.getItem("historial"))
+
+    let lista = document.getElementById("contenedor_cuentas");
+
+    console.log(lista)
+    
+    let res = document.createElement("ul");
+
+    lista.innerHTML = "";
+
+
+    for (item of info) {
+        
+        
+
+        res.innerHTML += `<li> ${item.numero1} ${item.op} ${item.numero2} = ${item.resultado} </li>`;
+
+        lista.append(res);
+
+    }
+}
+
+
+let Borrar = document.getElementById("boton");
+
+
+Borrar.addEventListener('click', function () {
+
+    let lista = document.getElementById("contenedor_cuentas");
+    
+    localStorage.removeItem("historial")
+    lista.innerHTML = "";
+})
 
 
 
@@ -141,3 +157,7 @@ function actualizar() {
     resultado.value = valorA;
 }
 
+
+window.addEventListener("load", ()=>{
+    traer_historial();
+})

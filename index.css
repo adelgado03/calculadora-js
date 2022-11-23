@@ -90,3 +90,11 @@ color: #fff;
     padding: 7px;
     margin-left:120px ;
 }
+
+
+ul{
+    padding: 0;
+}
+li{
+    list-style: none;
+}
